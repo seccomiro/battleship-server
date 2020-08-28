@@ -1,0 +1,42 @@
+Style/StringLiterals:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Layout/LineLength:
+  Enabled: false
+Layout/EmptyLinesAroundAccessModifier:
+  Enabled: false
+Layout/TrailingEmptyLines:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Style/SymbolArray:
+  Enabled: false
+Metrics/PerceivedComplexity:
+  Enabled: false
+Style/EmptyMethod:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/RaiseException:
+  Enabled: false
+Lint/StructNewOverride:
+  Enabled: false
+Style/ExponentialNotation:
+  Enabled: false
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: false
+Style/HashTransformValues:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
