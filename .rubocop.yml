@@ -13,7 +13,7 @@ Layout/LineLength:
 Layout/EmptyLinesAroundAccessModifier:
   Enabled: false
 Layout/TrailingEmptyLines:
-  Enabled: false
+  Enabled: true
 Metrics/ClassLength:
   Enabled: false
 Style/SymbolArray:
