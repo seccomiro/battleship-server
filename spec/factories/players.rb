@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :player do
-    match { nil }
-    user { nil }
+    match { match }
+    user { user }
   end
 end
