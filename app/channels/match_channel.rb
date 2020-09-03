@@ -1,7 +1,9 @@
 class MatchChannel < ApplicationCable::Channel
   def subscribed
-    reject unless params[:user_id] == 1
-    reject unless params[:match_id] == 1
+    match = Match.find(params[:match_id])
+    match.players.find(params[:user_id])
+  rescue ActiveRecord::RecordNotFound
+    reject
   end
 
   def unsubscribed
