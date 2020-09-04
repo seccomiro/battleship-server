@@ -6,22 +6,21 @@ Feature: player enters match
 
   Background: match already created
     Given a match already exists
-    And two players are already attached to the match
     And the match is ready to be played by the players
 
   Scenario: enter match
-    Given I am not yet playing
+    Given two players are already attached to the match
+    And I am not yet playing
     When I enter a match
     Then I should know that my sign in is confirmed
     And I should see "Welcome to Battleship"
 
-  # Scenario: is the first to enter a match
-  #   Given I am not yet playing
-  #   When I enter a match
-  #   And I should see "Waiting for the other player"
-  #   And I shouldn't see "Your opponent is"
+  Scenario: the first to enter a match
+    Given I entered a match
+    When I am the first player to enter the match
+    Then I should see "Waiting for the other player"
 
-  # Scenario: is the last to enter a match
+  # Scenario: the last to enter a match
   #   Given I am not yet playing
   #   When I enter a match
   #   And I should see "Your opponent is"

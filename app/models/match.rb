@@ -6,6 +6,7 @@ class Match < ApplicationRecord
     player.joined_at = DateTime.now
     player.save
     write_log(message: 'Welcome to Battleship', player: player)
+    write_log(message: 'Waiting for the other player', player: player) if players.count == 1
     true
   end
 
