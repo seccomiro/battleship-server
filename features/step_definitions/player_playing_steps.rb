@@ -29,12 +29,15 @@ Given('my opponent is a player named {string}') do |string|
 end
 
 Given('two players are already attached to the match') do
+  expect(@match.players.count).to eq(2)
 end
 
 Given('the match is ready to be played by the players') do
+  expect(@match.ready?).to be(true)
 end
 
 Given('I am not yet playing') do
+  expect(@match.players.joined).not_to include(@my_player)
 end
 
 When('I enter a match') do

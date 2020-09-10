@@ -1,10 +1,12 @@
 class Player < ApplicationRecord
-  belongs_to :match
+  belongs_to :match, autosave: true
   belongs_to :user, autosave: true
   # has_many :logs, -> { where(logs: { player: self }).or(where(logs: { player: nil })) }, through: :match
   has_many :logs
   scope :joined, -> { where.not(joined_at: nil) }
   delegate :name, :name=, to: :user
+
+  after_create :set_match_status
 
   def full_logs
     logs.map(&:to_s)
@@ -32,5 +34,12 @@ class Player < ApplicationRecord
 
   def write_log(message:, player: self)
     match.write_log(message: message, player: player)
+  end
+
+  private
+
+  def set_match_status
+    match.status = :ready if match.players.count == 2
+    match.save
   end
 end
