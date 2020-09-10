@@ -10,7 +10,7 @@ class Player < ApplicationRecord
     logs.map(&:to_s)
   end
 
-  def opponnent
+  def opponent
     match.players.where.not(id: id).first
   end
 
@@ -23,8 +23,8 @@ class Player < ApplicationRecord
     when 1
       write_log(message: 'Waiting for the other player')
     when 2
-      write_log(message: "Your opponent is #{opponnent.name}")
-      write_log(message: "Your opponent is #{name}", player: opponnent)
+      write_log(message: "Your opponent is #{opponent.name}")
+      write_log(message: "Your opponent is #{name}", player: opponent)
     end
 
     true

@@ -1,7 +1,7 @@
 def create_match
   @match = create(:match)
   create_my_player
-  create_opponnent_player
+  create_opponent_player
 end
 
 def create_my_player
@@ -9,9 +9,9 @@ def create_my_player
   @my_player = create(:player, match: @match, user: @my_user)
 end
 
-def create_opponnent_player
-  @opponnent_user = create(:user, email: 'user2@user.com', name: 'User 2')
-  @opponnent_player = create(:player, match: @match, user: @opponnent_user)
+def create_opponent_player
+  @opponent_user = create(:user, email: 'user2@user.com', name: 'User 2')
+  @opponent_player = create(:player, match: @match, user: @opponent_user)
 end
 
 Given('a match already exists') do
@@ -23,9 +23,9 @@ Given('I am a player named {string}') do |string|
   @my_player.save
 end
 
-Given('my opponnent is a player named {string}') do |string|
-  @opponnent_player.name = string
-  @opponnent_player.save
+Given('my opponent is a player named {string}') do |string|
+  @opponent_player.name = string
+  @opponent_player.save
 end
 
 Given('two players are already attached to the match') do
@@ -51,7 +51,7 @@ Then('I should see {string}') do |string|
 end
 
 When('my opponent should see {string}') do |string|
-  expect(@opponnent_player.full_logs).to include(string)
+  expect(@opponent_player.full_logs).to include(string)
 end
 
 Given('no players have joined a match yet') do
@@ -59,6 +59,6 @@ Given('no players have joined a match yet') do
 end
 
 Given('another player have already joined a match') do
-  @opponnent_player.join
+  @opponent_player.join
   expect(@match.players.joined.count).to eq(1)
 end

@@ -8,7 +8,7 @@ Feature: player enters match
     Given a match already exists
     And the match is ready to be played by the players
     And I am a player named "Player 1"
-    And my opponnent is a player named "Player 2"
+    And my opponent is a player named "Player 2"
 
   Scenario: enter match
     Given two players are already attached to the match
