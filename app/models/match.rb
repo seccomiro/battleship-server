@@ -5,9 +5,7 @@ class Match < ApplicationRecord
 
   before_save :ensure_status
 
-  def write_log(message:, player:)
-    logs.create(message: message, player: player)
-  end
+  private
 
   def ensure_status
     self.status = :created unless status
