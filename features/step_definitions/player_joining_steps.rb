@@ -1,33 +1,3 @@
-def create_match
-  @match = create(:match)
-  create_my_player
-  create_opponent_player
-end
-
-def create_my_player
-  @my_user = create(:user, email: 'user1@user.com', name: 'User 1')
-  @my_player = create(:player, match: @match, user: @my_user)
-end
-
-def create_opponent_player
-  @opponent_user = create(:user, email: 'user2@user.com', name: 'User 2')
-  @opponent_player = create(:player, match: @match, user: @opponent_user)
-end
-
-Given('a match already exists') do
-  create_match
-end
-
-Given('I am a player named {string}') do |string|
-  @my_player.name = string
-  @my_player.save
-end
-
-Given('my opponent is a player named {string}') do |string|
-  @opponent_player.name = string
-  @opponent_player.save
-end
-
 Given('two players are already attached to the match') do
   expect(@match.players.count).to eq(2)
 end
