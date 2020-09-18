@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_10_184550) do
+ActiveRecord::Schema.define(version: 2020_09_18_204918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "boards", force: :cascade do |t|
+    t.bigint "player_id", null: false
+    t.integer "cells", array: true
+    t.integer "public_cells", array: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["player_id"], name: "index_boards_on_player_id"
+  end
 
   create_table "logs", force: :cascade do |t|
     t.string "message"
@@ -54,6 +63,7 @@ ActiveRecord::Schema.define(version: 2020_09_10_184550) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "boards", "players"
   add_foreign_key "logs", "matches"
   add_foreign_key "logs", "players"
   add_foreign_key "players", "matches"

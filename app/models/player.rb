@@ -3,6 +3,7 @@ class Player < ApplicationRecord
   belongs_to :user, autosave: true
   # has_many :logs, -> { where(logs: { player: self }).or(where(logs: { player: nil })) }, through: :match
   has_many :logs
+  has_one :board
   scope :joined, -> { where.not(joined_at: nil).order(:joined_at) }
   delegate :name, :name=, to: :user
 
