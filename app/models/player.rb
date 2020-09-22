@@ -33,6 +33,10 @@ class Player < ApplicationRecord
     true
   end
 
+  def playing?
+    match.player_playing == self
+  end
+
   def guess(row:, column:)
     opponent.board.mark(row: row, column: column)
   end
