@@ -20,17 +20,22 @@ Then('all its cells should be closed') do
 end
 
 Given("I know my opponent's public board") do
-  pending # Write code here that turns the phrase above into concrete actions
+  @opponent_public_board = @opponent_player.board.public
 end
 
 When("it's my turn to play") do
-  pending # Write code here that turns the phrase above into concrete actions
+  @match.player_playing = @my_player
+
+  expect(@match.player_playing).to eq(@my_player)
+  expect(@my_player.playing?).to be(true)
+  expect(@opponent_player.playing?).to be(false)
 end
 
 Then('I should be able to choose a closed cell') do
-  pending # Write code here that turns the phrase above into concrete actions
+  @result = @my_player.guess(row: 0, column: 0)
 end
 
 Then('I should get a valid return') do
-  pending # Write code here that turns the phrase above into concrete actions
+  original_value = @opponent_player.board.private[0][0]
+  expect(@result).to eq(original_value)
 end

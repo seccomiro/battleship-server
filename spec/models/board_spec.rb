@@ -6,8 +6,12 @@ RSpec.describe Board, type: :model do
       expect(Board.generate).to be_instance_of(Array)
     end
 
-    it 'the returned Array is a matrix' do
+    it 'returns a a matrix' do
       expect(Board.generate[0]).to be_instance_of(Array)
+    end
+
+    it 'has valid Symbols at all positions' do
+      expect(Board.generate(height: 2, width: 2)).to match_array([[:water, :water], [:water, :water]])
     end
 
     context 'with no arguments' do
@@ -69,11 +73,35 @@ RSpec.describe Board, type: :model do
     end
 
     it 'returns a board with the same size of the private board' do
-      create_match
+      create_match(board_height: 2, board_width: 2)
       board = @my_player.board
 
-      expect(board.public.size).to eq(board.cells.size)
-      expect(board.public[0].size).to eq(board.cells[0].size)
+      expect(board.public.size).to eq(board.private.size)
+      expect(board.public[0].size).to eq(board.private[0].size)
+    end
+
+    context 'when not yet played' do
+      it 'returns a board only with :new Symbols' do
+        create_match(board_height: 2, board_width: 2)
+        board = @my_player.board
+
+        expect(board.public).to match_array([[:new, :new], [:new, :new]])
+      end
+    end
+  end
+
+  describe '#private' do
+    it 'exists' do
+      expect(subject).to respond_to(:private)
+    end
+
+    context 'with an empty board' do
+      it 'returns a board only with :water Symbols' do
+        create_match(board_height: 2, board_width: 2)
+        board = @my_player.board
+
+        expect(board.private).to match_array([[:water, :water], [:water, :water]])
+      end
     end
   end
 
@@ -86,13 +114,13 @@ RSpec.describe Board, type: :model do
 
     describe '#height' do
       it 'returns the height of the board' do
-        expect(board.height).to eq(board.cells.size)
+        expect(board.height).to eq(board.private.size)
       end
     end
 
     describe '#width' do
       it 'returns the width of the board' do
-        expect(board.width).to eq(board.cells[0].size)
+        expect(board.width).to eq(board.private[0].size)
       end
     end
   end
@@ -104,6 +132,33 @@ RSpec.describe Board, type: :model do
 
         expect(@my_player.board.new?).to be(true)
       end
+    end
+  end
+
+  describe '#mark' do
+    context 'at a closed cell' do
+      it 'returns a Symbol different from :new' do
+        create_match
+        result = @my_player.board.mark(row: 0, column: 0)
+
+        expect(result).to be_instance_of(Symbol)
+        expect(result).not_to eq(:new)
+      end
+    end
+  end
+
+  describe '.cell_value_to_sym' do
+    it 'always returns the right value' do
+      expect(Board.cell_value_to_sym(nil)).to eq(:new)
+      expect(Board.cell_value_to_sym(1)).to eq(:boat)
+      expect(Board.cell_value_to_sym(2)).to eq(:water)
+    end
+  end
+
+  describe '.sym_to_cell_value' do
+    it 'always returns the right value' do
+      expect(Board.sym_to_cell_value(:boat)).to eq(1)
+      expect(Board.sym_to_cell_value(:water)).to eq(2)
     end
   end
 end
