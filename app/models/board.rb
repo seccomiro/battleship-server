@@ -3,9 +3,33 @@ class Board < ApplicationRecord
 
   before_create :ensure_public_board
 
+  def initialize(arguments)
+    height = 10
+    width = 10
+    if arguments&.key?(:height)
+      height = arguments[:height]
+      arguments.delete(:height)
+    end
+    if arguments&.key?(:width)
+      width = arguments[:width]
+      arguments.delete(:width)
+    end
+
+    super(arguments)
+
+    self.private = Board.generate(height: height, width: width)
+  end
+
   def public
-    options = { nil => :new, 1 => :hit, 2 => :miss }
-    public_cells.map { |row| row.map { |cell| options[cell] } }
+    public_cells.map { |row| row.map { |cell| Board.cell_value_to_sym(cell) } }
+  end
+
+  def private
+    cells.map { |row| row.map { |cell| Board.cell_value_to_sym(cell) } }
+  end
+
+  def private=(value)
+    self.cells = value.map { |row| row.map { |cell| Board.sym_to_cell_value(cell) } }
   end
 
   def new?
@@ -13,7 +37,7 @@ class Board < ApplicationRecord
   end
 
   def self.generate(height: 10, width: 10)
-    [[nil] * width] * height
+    [[:water] * width] * height
   end
 
   def height
@@ -22,6 +46,17 @@ class Board < ApplicationRecord
 
   def width
     cells[0].size
+  end
+
+
+  def self.cell_value_to_sym(value)
+    options = { nil => :new, 1 => :boat, 2 => :water }
+    options[value]
+  end
+
+  def self.sym_to_cell_value(symbol)
+    options = { boat: 1, water: 2 }
+    options[symbol]
   end
 
   private
