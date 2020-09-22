@@ -48,6 +48,11 @@ class Board < ApplicationRecord
     cells[0].size
   end
 
+  def mark(row:, column:)
+    public_cells[row][column] = cells[row][column]
+    save
+    Board.cell_value_to_sym(public_cells[row][column])
+  end
 
   def self.cell_value_to_sym(value)
     options = { nil => :new, 1 => :boat, 2 => :water }
