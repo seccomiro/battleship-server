@@ -116,3 +116,5 @@ Style/SoleNestedConditional:
   Enabled: true
 Style/StringConcatenation:
   Enabled: true
+Metrics/BlockLength:
+  Enabled: false
