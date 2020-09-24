@@ -1,5 +1,6 @@
 class Board < ApplicationRecord
   belongs_to :player
+  scope :staging, -> { where(players: { match: nil }) }
 
   before_create :ensure_public_board
 
