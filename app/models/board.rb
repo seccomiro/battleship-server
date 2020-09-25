@@ -37,6 +37,10 @@ class Board < ApplicationRecord
     public.all? { |row| row.all? { |cell| cell == :new } }
   end
 
+  def empty?
+    private.all? { |row| row.all? { |cell| cell == :water } }
+  end
+
   def self.generate(height: 10, width: 10)
     [[:water] * width] * height
   end
