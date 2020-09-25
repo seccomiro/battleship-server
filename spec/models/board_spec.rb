@@ -65,6 +65,12 @@ RSpec.describe Board, type: :model do
       expect(board.public.size).to eq(board.height)
       expect(board.public[0].size).to eq(board.width)
     end
+
+    it 'ensures the creation of the boats' do
+      create_my_player
+
+      expect(@my_player.board.boats.count).to be > 0
+    end
   end
 
   describe '#public' do

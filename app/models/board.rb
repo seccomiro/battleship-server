@@ -1,8 +1,10 @@
 class Board < ApplicationRecord
   belongs_to :player
   scope :staging, -> { where(players: { match: nil }) }
+  has_many :boats
 
   before_create :ensure_public_board
+  before_create :ensure_boats
 
   def initialize(arguments)
     height = 10
@@ -86,6 +88,14 @@ class Board < ApplicationRecord
       row.map do
         nil
       end
+    end
+  end
+
+  def ensure_boats
+    return unless boat_set
+
+    boat_set.each do |size|
+      boats.build(size: size)
     end
   end
 end
