@@ -196,4 +196,38 @@ RSpec.describe Board, type: :model do
       expect(all_water).to be(false)
     end
   end
+
+  describe '#boat_set' do
+    context 'with a 5x5 board' do
+      it 'returns an array "[3, 2, 1]"' do
+        create_my_player(board_height: 5, board_width: 5)
+
+        expect(@my_player.board.boat_set).to match_array([3, 2, 1])
+      end
+    end
+
+    context 'with a 10x10 board' do
+      it 'returns an array "[5, 4, 3, 3, 2]"' do
+        create_my_player(board_height: 10, board_width: 10)
+
+        expect(@my_player.board.boat_set).to match_array([5, 4, 3, 3, 2])
+      end
+    end
+
+    context 'with a 15x15 board' do
+      it 'returns an array "[8, 7, 6, 5, 4, 4, 3, 2]"' do
+        create_my_player(board_height: 15, board_width: 15)
+
+        expect(@my_player.board.boat_set).to match_array([8, 7, 6, 5, 4, 4, 3, 2])
+      end
+    end
+
+    context 'with an invalid board size board' do
+      it 'returns nil' do
+        create_my_player(board_height: 7, board_width: 18)
+
+        expect(@my_player.board.boat_set).to be_nil
+      end
+    end
+  end
 end

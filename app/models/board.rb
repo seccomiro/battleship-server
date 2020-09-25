@@ -69,6 +69,16 @@ class Board < ApplicationRecord
     options[symbol]
   end
 
+  def boat_set
+    if width == 5 && height == 5
+      [3, 2, 1]
+    elsif width == 10 && height == 10
+      [5, 4, 3, 3, 2]
+    elsif width == 15 && height == 15
+      [8, 7, 6, 5, 4, 4, 3, 2]
+    end
+  end
+
   private
 
   def ensure_public_board
