@@ -161,4 +161,39 @@ RSpec.describe Board, type: :model do
       expect(Board.sym_to_cell_value(:water)).to eq(2)
     end
   end
+
+  describe '.staging' do
+    context 'with no staging boards' do
+      it 'returns 0' do
+        create_my_user
+
+        expect(@my_user.boards.staging.count).to eq(0)
+      end
+    end
+
+    context 'with staging boards' do
+      it 'returns 1' do
+        create_my_player
+
+        expect(@my_user.boards.staging.count).to eq(1)
+      end
+    end
+  end
+
+  describe '#empty?' do
+    before do
+      create_my_player
+    end
+    let(:all_water) { @my_player.board.private.all? { |row| row.all? { |cell| cell == :water } } }
+
+    it 'returns true if all the positions of the private board have :water' do
+      expect(all_water).to be(true)
+    end
+
+    it 'returns false if any of the positions of the private board have :water' do
+      @my_player.board.cells[0][0] = Board.sym_to_cell_value(:boat)
+
+      expect(all_water).to be(false)
+    end
+  end
 end
