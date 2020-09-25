@@ -1,5 +1,5 @@
 class Player < ApplicationRecord
-  belongs_to :match, autosave: true
+  belongs_to :match, autosave: true, optional: true
   belongs_to :user, autosave: true
   # has_many :logs, -> { where(logs: { player: self }).or(where(logs: { player: nil })) }, through: :match
   has_many :logs
@@ -14,10 +14,14 @@ class Player < ApplicationRecord
   end
 
   def opponent
+    return unless match
+
     match.players.where.not(id: id).first
   end
 
   def join
+    return unless match
+
     self.joined_at = DateTime.now
     save
 
@@ -34,7 +38,7 @@ class Player < ApplicationRecord
   end
 
   def playing?
-    match.player_playing == self
+    match&.player_playing == self
   end
 
   def guess(row:, column:)
@@ -44,6 +48,8 @@ class Player < ApplicationRecord
   private
 
   def set_match_status
+    return unless match
+
     match.status = :ready if match.players.count == 2
     match.save
   end

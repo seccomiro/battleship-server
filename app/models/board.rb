@@ -1,5 +1,6 @@
 class Board < ApplicationRecord
   belongs_to :player
+  scope :staging, -> { where(players: { match: nil }) }
 
   before_create :ensure_public_board
 
@@ -34,6 +35,10 @@ class Board < ApplicationRecord
 
   def new?
     public.all? { |row| row.all? { |cell| cell == :new } }
+  end
+
+  def empty?
+    private.all? { |row| row.all? { |cell| cell == :water } }
   end
 
   def self.generate(height: 10, width: 10)
