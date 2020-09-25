@@ -1,4 +1,4 @@
-Feature: player mounts a board with boats
+Feature: player gets boats to be distributed
 
   As a player
   I want to put my boats on a board
