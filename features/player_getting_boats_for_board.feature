@@ -1,8 +1,8 @@
 Feature: player gets boats to be distributed
 
-  As a player
-  I want to put my boats on a board
-  So that I will be ready to begin a new match
+  As a player with a board
+  I want to get the boats for that board
+  So that I will be able to distribute them on the board
 
   For now, there are only 3 predefined dimensions with their predefined boat list
 
