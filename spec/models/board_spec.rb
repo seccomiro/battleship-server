@@ -65,6 +65,12 @@ RSpec.describe Board, type: :model do
       expect(board.public.size).to eq(board.height)
       expect(board.public[0].size).to eq(board.width)
     end
+
+    it 'ensures the creation of the boats' do
+      create_my_player
+
+      expect(@my_player.board.boats.count).to be > 0
+    end
   end
 
   describe '#public' do
@@ -194,6 +200,64 @@ RSpec.describe Board, type: :model do
       @my_player.board.cells[0][0] = Board.sym_to_cell_value(:boat)
 
       expect(all_water).to be(false)
+    end
+  end
+
+  describe '#boat_set' do
+    context 'with a 5x5 board' do
+      it 'returns an array "[3, 2, 1]"' do
+        create_my_player(board_height: 5, board_width: 5)
+
+        expect(@my_player.board.boat_set).to match_array([3, 2, 1])
+      end
+    end
+
+    context 'with a 10x10 board' do
+      it 'returns an array "[5, 4, 3, 3, 2]"' do
+        create_my_player(board_height: 10, board_width: 10)
+
+        expect(@my_player.board.boat_set).to match_array([5, 4, 3, 3, 2])
+      end
+    end
+
+    context 'with a 15x15 board' do
+      it 'returns an array "[8, 7, 6, 5, 4, 4, 3, 2]"' do
+        create_my_player(board_height: 15, board_width: 15)
+
+        expect(@my_player.board.boat_set).to match_array([8, 7, 6, 5, 4, 4, 3, 2])
+      end
+    end
+
+    context 'with an invalid board size board' do
+      it 'returns nil' do
+        create_my_player(board_height: 7, board_width: 18)
+
+        expect(@my_player.board.boat_set).to be_nil
+      end
+    end
+  end
+
+  describe '#place_boat' do
+    context 'placing boat in vertical' do
+      it 'places the boat in the board' do
+        create_my_player(board_height: 2, board_width: 2)
+
+        boat = create(:boat, board: @my_player.board, size: 2)
+        boat.place(:vertical, column: 0, row: 0)
+
+        expect(@my_player.board.private).to match_array([[:boat, :water], [:boat, :water]])
+      end
+    end
+
+    context 'placing boat in horizontal' do
+      it 'places the boat in the board' do
+        create_my_player(board_height: 2, board_width: 2)
+
+        boat = create(:boat, board: @my_player.board, size: 2)
+        boat.place(:horizontal, column: 0, row: 0)
+
+        expect(@my_player.board.private).to match_array([[:boat, :boat], [:water, :water]])
+      end
     end
   end
 end
