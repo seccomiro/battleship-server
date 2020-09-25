@@ -81,6 +81,15 @@ class Board < ApplicationRecord
     end
   end
 
+  def place_boat(boat)
+    (boat.from_row..boat.to_row).each do |row|
+      (boat.from_column..boat.to_column).each do |column|
+        place(row: row, column: column)
+      end
+    end
+    save
+  end
+
   private
 
   def ensure_public_board
@@ -97,5 +106,9 @@ class Board < ApplicationRecord
     boat_set.each do |size|
       boats.build(size: size)
     end
+  end
+
+  def place(row:, column:)
+    cells[row][column] = Board.sym_to_cell_value(:boat)
   end
 end

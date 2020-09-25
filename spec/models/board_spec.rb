@@ -236,4 +236,28 @@ RSpec.describe Board, type: :model do
       end
     end
   end
+
+  describe '#place_boat' do
+    context 'placing boat in vertical' do
+      it 'places the boat in the board' do
+        create_my_player(board_height: 2, board_width: 2)
+
+        boat = create(:boat, board: @my_player.board, size: 2)
+        boat.place(:vertical, column: 0, row: 0)
+
+        expect(@my_player.board.private).to match_array([[:boat, :water], [:boat, :water]])
+      end
+    end
+
+    context 'placing boat in horizontal' do
+      it 'places the boat in the board' do
+        create_my_player(board_height: 2, board_width: 2)
+
+        boat = create(:boat, board: @my_player.board, size: 2)
+        boat.place(:horizontal, column: 0, row: 0)
+
+        expect(@my_player.board.private).to match_array([[:boat, :boat], [:water, :water]])
+      end
+    end
+  end
 end

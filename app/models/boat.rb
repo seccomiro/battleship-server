@@ -36,7 +36,7 @@ class Boat < ApplicationRecord
       self.to_row = row
     end
     save
-
+    board.place_boat(self)
     true
   end
 end
