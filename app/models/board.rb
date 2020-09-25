@@ -1,8 +1,10 @@
 class Board < ApplicationRecord
   belongs_to :player
   scope :staging, -> { where(players: { match: nil }) }
+  has_many :boats
 
   before_create :ensure_public_board
+  before_create :ensure_boats
 
   def initialize(arguments)
     height = 10
@@ -69,6 +71,25 @@ class Board < ApplicationRecord
     options[symbol]
   end
 
+  def boat_set
+    if width == 5 && height == 5
+      [3, 2, 1]
+    elsif width == 10 && height == 10
+      [5, 4, 3, 3, 2]
+    elsif width == 15 && height == 15
+      [8, 7, 6, 5, 4, 4, 3, 2]
+    end
+  end
+
+  def place_boat(boat)
+    (boat.from_row..boat.to_row).each do |row|
+      (boat.from_column..boat.to_column).each do |column|
+        place(row: row, column: column)
+      end
+    end
+    save
+  end
+
   private
 
   def ensure_public_board
@@ -77,5 +98,17 @@ class Board < ApplicationRecord
         nil
       end
     end
+  end
+
+  def ensure_boats
+    return unless boat_set
+
+    boat_set.each do |size|
+      boats.build(size: size)
+    end
+  end
+
+  def place(row:, column:)
+    cells[row][column] = Board.sym_to_cell_value(:boat)
   end
 end

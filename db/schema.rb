@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_24_210804) do
+ActiveRecord::Schema.define(version: 2020_09_25_173455) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(version: 2020_09_24_210804) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["player_id"], name: "index_boards_on_player_id"
+  end
+
+  create_table "boats", force: :cascade do |t|
+    t.bigint "board_id", null: false
+    t.integer "size"
+    t.integer "from_column"
+    t.integer "to_column"
+    t.integer "from_row"
+    t.integer "to_row"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["board_id"], name: "index_boats_on_board_id"
   end
 
   create_table "logs", force: :cascade do |t|
@@ -66,6 +78,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_210804) do
   end
 
   add_foreign_key "boards", "players"
+  add_foreign_key "boats", "boards"
   add_foreign_key "logs", "matches"
   add_foreign_key "logs", "players"
   add_foreign_key "matches", "players", column: "player_playing_id"

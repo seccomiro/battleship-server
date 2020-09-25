@@ -2,7 +2,7 @@ Feature: player creates a board
 
   As a user
   I want to create a new Board
-  So that I will be a Player ready to begin a new match
+  So that I will be a Player ready to begin putting my boats on the board
 
   Background: user already exists
     Given I am a registered user
