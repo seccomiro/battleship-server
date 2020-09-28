@@ -6,6 +6,14 @@ Given('I have a set of boats for that board') do
   @boats = @my_player.board.boats
 end
 
+Given('I have a boat with size {int}') do |int|
+  @first_boat = @my_player.board.boats.create(size: 2)
+end
+
+Given('I have another boat with size {int}') do |int|
+  @second_boat = @my_player.board.boats.create(size: 2)
+end
+
 When('I place each boat side by side from the biggest to the smallest, beginning from the top-left') do
   @boats.order(size: :desc).each_with_index do |boat, i|
     boat.place(:vertical, column: i, row: 0)
@@ -22,17 +30,13 @@ Then('there should be no boats left') do
   expect(@my_player.board.boats.docked.count).to eq(0)
 end
 
-Given('I have already placed the biggest boat') do
-  boat = @my_player.board.boats.create(size: 2)
-  # boat = @boats.order(size: :desc).docked.first
-  boat.place(:vertical, column: 0, row: 0)
+Given('I have already placed the first boat') do
+  @first_boat.place(:vertical, column: 0, row: 0)
 end
 
-When('I try to place the next biggest boat overlapping at least one of the cells of the first boat') do
-  @boat = @my_player.board.boats.create(size: 2)
-  # boat = @boats.order(size: :desc).docked.first
+When('I try to place the next boat overlapping at least one of the cells of the first boat') do
   @previous_board = @my_player.board.private
-  @place_method = -> { @boat.place(:vertical, column: 0, row: 1) }
+  @place_method = -> { @second_boat.place(:vertical, column: 0, row: 1) }
 end
 
 Then('I should be informed about the problem with a feedback about the overlapping cells') do
@@ -46,5 +50,5 @@ Then('the board should not change') do
 end
 
 Then('the boat should not be placed') do
-  expect(@boat.placed?).to be(false)
+  expect(@second_boat.placed?).to be(false)
 end

@@ -18,9 +18,10 @@ Feature: player mounts the board with his boats
 
   Scenario: boat overlapping
     Given I have a board with dimensions 2 x 3
-    And I have a set of boats for that board
-    And I have already placed the biggest boat
-    When I try to place the next biggest boat overlapping at least one of the cells of the first boat
+    And I have a boat with size 2
+    And I have another boat with size 2
+    And I have already placed the first boat
+    When I try to place the next boat overlapping at least one of the cells of the first boat
     Then I should be informed about the problem with a feedback about the overlapping cells
     And the board should not change
     And the boat should not be placed
