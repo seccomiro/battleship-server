@@ -3,7 +3,7 @@ Given('I have already created a board with dimensions {int} x {int}') do |width,
 end
 
 When('I ask for the boats to be distributed') do
-  @boat_set = @my_player.board.boat_set
+  @boat_set = @my_player.board.boats.order(size: :desc).pluck(:size)
 end
 
 Then('I should receive the following boats to be distributed: {string}') do |boat_set|
