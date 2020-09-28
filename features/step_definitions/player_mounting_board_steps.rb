@@ -21,3 +21,30 @@ end
 Then('there should be no boats left') do
   expect(@my_player.board.boats.docked.count).to eq(0)
 end
+
+Given('I have already placed the biggest boat') do
+  boat = @my_player.board.boats.create(size: 2)
+  # boat = @boats.order(size: :desc).docked.first
+  boat.place(:vertical, column: 0, row: 0)
+end
+
+When('I try to place the next biggest boat overlapping at least one of the cells of the first boat') do
+  @boat = @my_player.board.boats.create(size: 2)
+  # boat = @boats.order(size: :desc).docked.first
+  @previous_board = @my_player.board.private
+  @place_method = -> { @boat.place(:vertical, column: 0, row: 1) }
+end
+
+Then('I should be informed about the problem with a feedback about the overlapping cells') do
+  expect { @place_method.call }
+    .to raise_error(an_instance_of(Battleship::BoatPlacingError)
+      .and(having_attributes(errors: match_array([{ row: 1, column: 0, type: :boat_overlapping }]))))
+end
+
+Then('the board should not change') do
+  expect(@my_player.board.private).to match_array(@previous_board)
+end
+
+Then('the boat should not be placed') do
+  expect(@boat.placed?).to be(false)
+end
