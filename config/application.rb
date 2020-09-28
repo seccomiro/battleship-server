@@ -34,4 +34,6 @@ module Battleship
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
   end
+
+  require "#{Rails.root}/lib/errors.rb"
 end
