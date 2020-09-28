@@ -15,3 +15,4 @@ Feature: player gets boats to be distributed
       | 5     | 5      | "3,2,1"           |
       | 10    | 10     | "5,4,3,3,2"       |
       | 15    | 15     | "8,7,6,5,4,4,3,2" |
+      | 7     | 8      | ""                |
