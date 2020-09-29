@@ -1,8 +1,3 @@
-Given('both players have already joined the match') do
-  @my_player.join
-  @opponent_player.join
-end
-
 Given('my opponent has a board') do
   @opponent_player.board
 end
