@@ -21,7 +21,7 @@ When('I place each boat side by side from the biggest to the smallest, beginning
 end
 
 Then('my private board should be: {string}') do |matrix_string|
-  matrix = matrix_string.split('/').map { |row| row.split(',').map(&:to_sym) }
+  matrix = matrix_string.split('/').map { |row| row.split(',').map { |cell| cell == 'b' ? :boat : :water } }
 
   expect(@my_player.board.private).to match_array(matrix)
 end
