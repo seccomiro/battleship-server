@@ -4,7 +4,7 @@ Feature: player plays a match
   I want to play the game
   So that I can try to win it
 
-  Background: match already created
+  Background: players have already joined the match
     Given a match already exists
     And I am a player named "Player 1"
     And my opponent is a player named "Player 2"
@@ -16,7 +16,7 @@ Feature: player plays a match
     Then I should receive his public board
     And all its cells should be closed
 
-  Scenario: playing
+  Scenario: try a first guess
     Given I know my opponent's public board
     When it's my turn to play
     Then I should be able to choose a closed cell
