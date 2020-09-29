@@ -86,6 +86,13 @@ class Board < ApplicationRecord
     end
   end
 
+  def remove_boat(_boat, from_row:, to_row:, from_column:, to_column:)
+    args = { from_row: from_row, to_row: to_row, from_column: from_column, to_column: to_column }
+    each_boat_cell(args) do |row, column|
+      remove(row: row, column: column)
+    end
+  end
+
   private
 
   def each_boat_cell(from_row:, to_row:, from_column:, to_column:)
@@ -127,5 +134,9 @@ class Board < ApplicationRecord
 
   def place(row:, column:)
     cells[row][column] = Board.sym_to_cell_value(:boat)
+  end
+
+  def remove(row:, column:)
+    cells[row][column] = Board.sym_to_cell_value(:water)
   end
 end

@@ -6,11 +6,11 @@ Given('I have a set of boats for that board') do
   @boats = @my_player.board.boats
 end
 
-Given('I have a boat with size {int}') do |size|
+Given('I have a first boat with size {int}') do |size|
   @first_boat = @my_player.board.boats.create(size: size)
 end
 
-Given('I have another boat with size {int}') do |size|
+Given('I have a test boat with size {int}') do |size|
   @test_boat = @my_player.board.boats.create(size: size)
 end
 
@@ -21,7 +21,7 @@ When('I place each boat side by side from the biggest to the smallest, beginning
 end
 
 Then('my private board should be: {string}') do |matrix_string|
-  matrix = matrix_string.split('/').map { |row| row.split(',').map(&:to_sym) }
+  matrix = matrix_string.split('/').map { |row| row.split(',').map { |cell| cell == 'b' ? :boat : :water } }
 
   expect(@my_player.board.private).to match_array(matrix)
 end
@@ -54,11 +54,27 @@ Then('the boat should not be placed') do
 end
 
 When('I try to place the boat from row {int}, column {int} and direction {string}') do |from_row, from_column, direction|
-  @test_boat ||= @first_boat
   @previous_board = @my_player.board.private
   @place_method = -> { @test_boat.place(direction.to_sym, column: from_column, row: from_row) }
 end
 
 Then('I should be informed about the problem with a feedback about the problematic cells') do
   expect { @place_method.call }.to raise_error(Battleship::BoatPlacingError)
+end
+
+Given('I have already placed the boat') do
+  @test_boat.place(:vertical, column: 0, row: 0)
+end
+
+When('I remove the boat from the board') do
+  @test_boat.remove
+end
+
+Then('the cells where the boat were previously placed should be empty') do
+  expect(@my_player.board.private[0][0]).to eq(:water)
+  expect(@my_player.board.private[1][0]).to eq(:water)
+end
+
+Then('the placed boat count of the board should be {int}') do |count|
+  expect(@my_player.board.boats.placed.count).to eq(count)
 end
