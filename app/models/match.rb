@@ -6,6 +6,14 @@ class Match < ApplicationRecord
 
   before_save :ensure_status
 
+  def begin
+    raise Battleship::MatchStartingError.new unless players_joined?
+
+    self.started_at = DateTime.now
+    self.status = :being_played
+    save
+  end
+
   private
 
   def ensure_status
