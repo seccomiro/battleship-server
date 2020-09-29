@@ -61,3 +61,20 @@ end
 Then('I should be informed about the problem with a feedback about the problematic cells') do
   expect { @place_method.call }.to raise_error(Battleship::BoatPlacingError)
 end
+
+Given('I have already placed the boat') do
+  @test_boat.place(:vertical, column: 0, row: 0)
+end
+
+When('I remove the boat from the board') do
+  @test_boat.remove
+end
+
+Then('the cells where the boat were previously placed should be empty') do
+  expect(@my_player.board.private[0][0]).to eq(:water)
+  expect(@my_player.board.private[1][0]).to eq(:water)
+end
+
+Then('the placed boat count of the board should be {int}') do |count|
+  expect(@my_player.board.boats.placed.count).to eq(count)
+end

@@ -43,3 +43,12 @@ Feature: player mounts the board with his boats
       | -2       | -2          | "horizontal" |
       | 2        | 2           | "vertical"   |
       | 2        | 2           | "horizontal" |
+
+  Scenario: removing a placed boat
+    Given I have a board with dimensions 2 x 2
+    And I have a test boat with size 2
+    And I have already placed the boat
+    When I remove the boat from the board
+    Then the cells where the boat were previously placed should be empty
+    And the boat should not be placed
+    And the placed boat count of the board should be 0
