@@ -25,3 +25,21 @@ Feature: player mounts the board with his boats
     Then I should be informed about the problem with a feedback about the overlapping cells
     And the board should not change
     And the boat should not be placed
+
+  Scenario: boat out of bounds
+    Given I have a board with dimensions 2 x 2
+    And I have a boat with size 2
+    When I try to place the boat from row <from_row>, column <from_column> and direction <direction>
+    Then I should be informed about the problem with a feedback about the problematic cells
+    And the board should not change
+    And the boat should not be placed
+    Examples:
+      | from_row | from_column | direction    |
+      | -1       | 0           | "vertical"   |
+      | 1        | 0           | "vertical"   |
+      | 0        | -1          | "horizontal" |
+      | 0        | 1           | "horizontal" |
+      | -2       | -2          | "vertical"   |
+      | -2       | -2          | "horizontal" |
+      | 2        | 2           | "vertical"   |
+      | 2        | 2           | "horizontal" |

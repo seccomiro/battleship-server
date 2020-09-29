@@ -6,12 +6,12 @@ Given('I have a set of boats for that board') do
   @boats = @my_player.board.boats
 end
 
-Given('I have a boat with size {int}') do |int|
-  @first_boat = @my_player.board.boats.create(size: 2)
+Given('I have a boat with size {int}') do |size|
+  @first_boat = @my_player.board.boats.create(size: size)
 end
 
-Given('I have another boat with size {int}') do |int|
-  @second_boat = @my_player.board.boats.create(size: 2)
+Given('I have another boat with size {int}') do |size|
+  @test_boat = @my_player.board.boats.create(size: size)
 end
 
 When('I place each boat side by side from the biggest to the smallest, beginning from the top-left') do
@@ -36,7 +36,7 @@ end
 
 When('I try to place the next boat overlapping at least one of the cells of the first boat') do
   @previous_board = @my_player.board.private
-  @place_method = -> { @second_boat.place(:vertical, column: 0, row: 1) }
+  @place_method = -> { @test_boat.place(:vertical, column: 0, row: 1) }
 end
 
 Then('I should be informed about the problem with a feedback about the overlapping cells') do
@@ -50,5 +50,15 @@ Then('the board should not change') do
 end
 
 Then('the boat should not be placed') do
-  expect(@second_boat.placed?).to be(false)
+  expect(@test_boat.placed?).to be(false)
+end
+
+When('I try to place the boat from row {int}, column {int} and direction {string}') do |from_row, from_column, direction|
+  @test_boat ||= @first_boat
+  @previous_board = @my_player.board.private
+  @place_method = -> { @test_boat.place(direction.to_sym, column: from_column, row: from_row) }
+end
+
+Then('I should be informed about the problem with a feedback about the problematic cells') do
+  expect { @place_method.call }.to raise_error(Battleship::BoatPlacingError)
 end

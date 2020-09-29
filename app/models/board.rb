@@ -77,6 +77,7 @@ class Board < ApplicationRecord
     errors = []
     each_boat_cell(args) do |row, column, value|
       errors << { row: row, column: column, type: :boat_overlapping } if value == :boat
+      errors << { row: row, column: column, type: :boat_out_of_bounds } if value == :boat_out_of_bounds
     end
     raise Battleship::BoatPlacingError.new(errors) if errors.any?
 
@@ -92,7 +93,8 @@ class Board < ApplicationRecord
 
     (from_row..to_row).each do |row|
       (from_column..to_column).each do |column|
-        yield(row, column, private[row][column])
+        value = row < 0 || column < 0 || row >= height || column >= width ? :boat_out_of_bounds : private[row][column]
+        yield(row, column, value)
       end
     end
   end
