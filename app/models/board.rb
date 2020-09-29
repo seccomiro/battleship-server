@@ -71,6 +71,34 @@ class Board < ApplicationRecord
     options[symbol]
   end
 
+  def place_boat(_boat, from_row:, to_row:, from_column:, to_column:)
+    args = { from_row: from_row, to_row: to_row, from_column: from_column, to_column: to_column }
+
+    errors = []
+    each_boat_cell(args) do |row, column, value|
+      errors << { row: row, column: column, type: :boat_overlapping } if value == :boat
+      errors << { row: row, column: column, type: :boat_out_of_bounds } if value == :boat_out_of_bounds
+    end
+    raise Battleship::BoatPlacingError.new(errors) if errors.any?
+
+    each_boat_cell(args) do |row, column|
+      place(row: row, column: column)
+    end
+  end
+
+  private
+
+  def each_boat_cell(from_row:, to_row:, from_column:, to_column:)
+    return unless block_given?
+
+    (from_row..to_row).each do |row|
+      (from_column..to_column).each do |column|
+        value = row < 0 || column < 0 || row >= height || column >= width ? :boat_out_of_bounds : private[row][column]
+        yield(row, column, value)
+      end
+    end
+  end
+
   def boat_set
     if width == 5 && height == 5
       [3, 2, 1]
@@ -80,17 +108,6 @@ class Board < ApplicationRecord
       [8, 7, 6, 5, 4, 4, 3, 2]
     end
   end
-
-  def place_boat(boat)
-    (boat.from_row..boat.to_row).each do |row|
-      (boat.from_column..boat.to_column).each do |column|
-        place(row: row, column: column)
-      end
-    end
-    save
-  end
-
-  private
 
   def ensure_public_board
     self.public_cells = cells.map do |row|

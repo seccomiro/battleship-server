@@ -1,5 +1,5 @@
 class Boat < ApplicationRecord
-  belongs_to :board
+  belongs_to :board, autosave: true
   scope :docked, -> { where(from_column: nil).or where(to_column: nil).or where(from_row: nil).or where(to_row: nil) }
   scope :placed, -> { where.not(from_column: nil).where.not(to_column: nil).where.not(from_row: nil).where.not(to_row: nil) }
 
@@ -21,22 +21,29 @@ class Boat < ApplicationRecord
   end
 
   def place(direction, column:, row:)
-    self.from_column = column
-    self.from_row = row
+    from_column = column
+    from_row = row
 
     case direction
     when :horizontal
-      self.to_column = column + size - 1
-      self.to_row = row
+      to_column = column + size - 1
+      to_row = row
     when :vertical
-      self.to_column = column
-      self.to_row = row + size - 1
+      to_column = column
+      to_row = row + size - 1
     else
-      self.to_column = column
-      self.to_row = row
+      to_column = column
+      to_row = row
     end
+
+    board.place_boat(self, from_row: from_row, to_row: to_row, from_column: from_column, to_column: to_column)
+
+    self.from_row = from_row
+    self.to_row = to_row
+    self.from_column = from_column
+    self.to_column = to_column
+
     save
-    board.place_boat(self)
     true
   end
 end
