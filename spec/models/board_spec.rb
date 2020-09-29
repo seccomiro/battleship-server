@@ -262,4 +262,16 @@ RSpec.describe Board, type: :model do
       end
     end
   end
+
+  describe '#remove_boat' do
+    it 'removes the boat from the board' do
+      create_my_player(board_height: 2, board_width: 2)
+      boat = create(:boat, board: @my_player.board, size: 2)
+      boat.place(:vertical, column: 0, row: 0)
+
+      @my_player.board.remove_boat(boat, from_row: 0, to_row: 1, from_column: 0, to_column: 0)
+
+      expect(@my_player.board.private).to match_array([[:water, :water], [:water, :water]])
+    end
+  end
 end
