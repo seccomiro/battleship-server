@@ -11,10 +11,15 @@ class Match < ApplicationRecord
 
     self.started_at = DateTime.now
     self.status = :being_played
+    draw_starting_player
     save
   end
 
   private
+
+  def draw_starting_player
+    self.player_playing = players.sample
+  end
 
   def ensure_status
     self.status = :created unless status
