@@ -7,4 +7,10 @@ module Battleship
       super
     end
   end
+
+  class BoatRemovingError < StandardError
+    def initialize
+      super
+    end
+  end
 end
