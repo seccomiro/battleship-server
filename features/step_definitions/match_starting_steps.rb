@@ -11,5 +11,5 @@ Then('the starting player should be one of the players attached to the match') d
 end
 
 Then('the status of the match should be set to being played') do
-  @match.being_played?
+  expect(@match.being_played?).to be(true)
 end
