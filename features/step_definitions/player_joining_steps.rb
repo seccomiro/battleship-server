@@ -35,3 +35,7 @@ Given('another player have already joined a match') do
   @opponent_player.join
   expect(@match.players.joined.count).to eq(1)
 end
+
+Then('the match should have the status set to players joined') do
+  expect(@match.players_joined?).to be(true)
+end

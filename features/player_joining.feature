@@ -27,3 +27,4 @@ Feature: player enters match
     When I enter a match
     Then I should see "Your opponent is Player 2"
     And my opponent should see "Your opponent is Player 1"
+    And the match should have the status set to players joined
