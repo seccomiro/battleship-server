@@ -18,8 +18,8 @@ Feature: player mounts the board with his boats
 
   Scenario: boat overlapping
     Given I have a board with dimensions 2 x 3
-    And I have a boat with size 2
-    And I have another boat with size 2
+    And I have a first boat with size 2
+    And I have a test boat with size 2
     And I have already placed the first boat
     When I try to place the next boat overlapping at least one of the cells of the first boat
     Then I should be informed about the problem with a feedback about the overlapping cells
@@ -28,7 +28,7 @@ Feature: player mounts the board with his boats
 
   Scenario: boat out of bounds
     Given I have a board with dimensions 2 x 2
-    And I have a boat with size 2
+    And I have a test boat with size 2
     When I try to place the boat from row <from_row>, column <from_column> and direction <direction>
     Then I should be informed about the problem with a feedback about the problematic cells
     And the board should not change

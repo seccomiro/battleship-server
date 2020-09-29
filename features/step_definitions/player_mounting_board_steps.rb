@@ -6,11 +6,11 @@ Given('I have a set of boats for that board') do
   @boats = @my_player.board.boats
 end
 
-Given('I have a boat with size {int}') do |size|
+Given('I have a first boat with size {int}') do |size|
   @first_boat = @my_player.board.boats.create(size: size)
 end
 
-Given('I have another boat with size {int}') do |size|
+Given('I have a test boat with size {int}') do |size|
   @test_boat = @my_player.board.boats.create(size: size)
 end
 
@@ -54,7 +54,6 @@ Then('the boat should not be placed') do
 end
 
 When('I try to place the boat from row {int}, column {int} and direction {string}') do |from_row, from_column, direction|
-  @test_boat ||= @first_boat
   @previous_board = @my_player.board.private
   @place_method = -> { @test_boat.place(direction.to_sym, column: from_column, row: from_row) }
 end
