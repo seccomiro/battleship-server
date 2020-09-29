@@ -245,7 +245,7 @@ RSpec.describe Board, type: :model do
         create_my_player(board_height: 2, board_width: 2)
 
         boat = create(:boat, board: @my_player.board, size: 2)
-        boat.place(:vertical, column: 0, row: 0)
+        @my_player.board.place_boat(boat, from_row: 0, to_row: 1, from_column: 0, to_column: 0)
 
         expect(@my_player.board.private).to match_array([[:boat, :water], [:boat, :water]])
       end
@@ -256,7 +256,7 @@ RSpec.describe Board, type: :model do
         create_my_player(board_height: 2, board_width: 2)
 
         boat = create(:boat, board: @my_player.board, size: 2)
-        boat.place(:horizontal, column: 0, row: 0)
+        @my_player.board.place_boat(boat, from_row: 0, to_row: 0, from_column: 0, to_column: 1)
 
         expect(@my_player.board.private).to match_array([[:boat, :boat], [:water, :water]])
       end
