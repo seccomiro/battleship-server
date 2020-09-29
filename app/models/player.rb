@@ -32,6 +32,8 @@ class Player < ApplicationRecord
     when 2
       logs.create(message: "Your opponent is #{opponent.name}")
       opponent.logs.create(message: "Your opponent is #{name}")
+      match.status = :players_joined
+      match.save
     end
 
     true
