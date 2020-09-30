@@ -6,6 +6,7 @@ class Player < ApplicationRecord
   has_one :board
   scope :joined, -> { where.not(joined_at: nil).order(:joined_at) }
   delegate :name, :name=, to: :user
+  validate :board_is_fully_mounted, unless: -> { match.nil? || board.nil? }
 
   after_create :set_match_status
 
@@ -54,5 +55,9 @@ class Player < ApplicationRecord
 
     match.status = :ready if match.players.count == 2
     match.save
+  end
+
+  def board_is_fully_mounted
+    errors.add(:board, 'is not fully mounted') unless board.mounted?
   end
 end
