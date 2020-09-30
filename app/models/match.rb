@@ -15,6 +15,10 @@ class Match < ApplicationRecord
     save
   end
 
+  def attach_player(player)
+    players << player
+  end
+
   private
 
   def draw_starting_player
