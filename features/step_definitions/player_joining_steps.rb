@@ -1,9 +1,6 @@
 Given('two players are already attached to the match') do
   expect(@match.players.count).to eq(2)
-end
-
-Given('the match is ready to be played by the players') do
-  expect(@match.ready?).to be(true)
+  expect(@match.has_players?).to be(true)
 end
 
 Given('I am not yet playing') do
@@ -34,4 +31,8 @@ end
 Given('another player have already joined a match') do
   @opponent_player.join
   expect(@match.players.joined.count).to eq(1)
+end
+
+Then('the match should have the status set to players joined') do
+  expect(@match.players_joined?).to be(true)
 end

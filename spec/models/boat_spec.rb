@@ -98,4 +98,19 @@ RSpec.describe Boat, type: :model do
       expect(@my_player.board.boats.placed.count).to eq(2)
     end
   end
+
+  describe '#remove' do
+    context 'when the boat is placed' do
+      it 'does not raise error' do
+        first_boat.place(:vertical, column: 0, row: 0)
+        expect { first_boat.remove }.not_to raise_error
+      end
+    end
+
+    context 'when the boat is docked' do
+      it 'raises error' do
+        expect { first_boat.remove }.to raise_error
+      end
+    end
+  end
 end

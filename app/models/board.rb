@@ -43,6 +43,10 @@ class Board < ApplicationRecord
     private.all? { |row| row.all? { |cell| cell == :water } }
   end
 
+  def mounted?
+    boats.all?(&:placed?)
+  end
+
   def self.generate(height: 10, width: 10)
     [[:water] * width] * height
   end
@@ -79,10 +83,17 @@ class Board < ApplicationRecord
       errors << { row: row, column: column, type: :boat_overlapping } if value == :boat
       errors << { row: row, column: column, type: :boat_out_of_bounds } if value == :boat_out_of_bounds
     end
-    raise Battleship::BoatPlacingError.new(errors) if errors.any?
+    raise Battleship::BoatPlacingError, errors if errors.any?
 
     each_boat_cell(args) do |row, column|
       place(row: row, column: column)
+    end
+  end
+
+  def remove_boat(_boat, from_row:, to_row:, from_column:, to_column:)
+    args = { from_row: from_row, to_row: to_row, from_column: from_column, to_column: to_column }
+    each_boat_cell(args) do |row, column|
+      remove(row: row, column: column)
     end
   end
 
@@ -127,5 +138,9 @@ class Board < ApplicationRecord
 
   def place(row:, column:)
     cells[row][column] = Board.sym_to_cell_value(:boat)
+  end
+
+  def remove(row:, column:)
+    cells[row][column] = Board.sym_to_cell_value(:water)
   end
 end

@@ -46,4 +46,17 @@ class Boat < ApplicationRecord
     save
     true
   end
+
+  def remove
+    raise Battleship::BoatRemovingError.new if docked?
+
+    board.remove_boat(self, from_row: from_row, to_row: to_row, from_column: from_column, to_column: to_column)
+
+    self.from_row = nil
+    self.to_row = nil
+    self.from_column = nil
+    self.to_column = nil
+
+    save
+  end
 end

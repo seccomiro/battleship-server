@@ -6,8 +6,9 @@ class Player < ApplicationRecord
   has_one :board
   scope :joined, -> { where.not(joined_at: nil).order(:joined_at) }
   delegate :name, :name=, to: :user
+  validate :board_is_fully_mounted, unless: -> { match.nil? || board.nil? }
 
-  after_create :set_match_status
+  after_save :set_match_status
 
   def full_logs
     logs.map(&:to_s)
@@ -32,6 +33,8 @@ class Player < ApplicationRecord
     when 2
       logs.create(message: "Your opponent is #{opponent.name}")
       opponent.logs.create(message: "Your opponent is #{name}")
+      match.status = :players_joined
+      match.save
     end
 
     true
@@ -50,7 +53,13 @@ class Player < ApplicationRecord
   def set_match_status
     return unless match
 
-    match.status = :ready if match.players.count == 2
-    match.save
+    if match.created? && match.players.count == 2
+      match.status = :has_players
+      match.save
+    end
+  end
+
+  def board_is_fully_mounted
+    errors.add(:board, 'is not fully mounted') unless board.mounted?
   end
 end

@@ -7,4 +7,13 @@ module Battleship
       super
     end
   end
+
+  class BoatRemovingError < StandardError
+  end
+
+  class MatchStartingError < StandardError
+  end
+
+  class PlayerAttachingError < StandardError
+  end
 end
