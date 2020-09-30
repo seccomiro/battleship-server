@@ -1,7 +1,7 @@
 class Match < ApplicationRecord
   has_many :players
   has_many :logs
-  enum status: [:created, :ready, :players_joined, :being_played]
+  enum status: [:created, :has_players, :players_joined, :being_played]
   belongs_to :player_playing, class_name: 'Player', optional: true
 
   before_save :ensure_status
