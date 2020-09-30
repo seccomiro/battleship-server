@@ -53,12 +53,21 @@ RSpec.describe Match, type: :model do
     end
 
     it 'pushed the player into players array' do
-      create_my_player
+      create_my_player(distribute_boats: true)
       create_match(players: false)
 
       @match.attach_player(@my_player)
 
       expect(@match.players).to include(@my_player)
+    end
+
+    context 'when the board is not mounted' do
+      it 'raises a PlayerAttachingError' do
+        create_my_player
+        create_match(players: false)
+
+        expect { @match.attach_player(@my_player) }.to raise_error(Battleship::PlayerAttachingError)
+      end
     end
   end
 end

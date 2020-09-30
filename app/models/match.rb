@@ -7,7 +7,7 @@ class Match < ApplicationRecord
   before_save :ensure_status
 
   def begin
-    raise Battleship::MatchStartingError.new unless players_joined?
+    raise Battleship::MatchStartingError unless players_joined?
 
     self.started_at = DateTime.now
     self.status = :being_played
@@ -16,6 +16,8 @@ class Match < ApplicationRecord
   end
 
   def attach_player(player)
+    raise Battleship::PlayerAttachingError unless player.board.mounted?
+
     players << player
   end
 

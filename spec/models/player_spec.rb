@@ -79,14 +79,6 @@ RSpec.describe Player, type: :model do
           create_match(players: false)
         end
 
-        context 'the board is not mounted' do
-          it 'is not valid' do
-            @match.attach_player(@my_player)
-
-            expect(@my_player).not_to be_valid
-          end
-        end
-
         context 'the board is mounted' do
           it 'is valid' do
             distribute_my_boats
