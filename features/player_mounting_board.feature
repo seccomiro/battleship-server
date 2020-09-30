@@ -2,7 +2,7 @@ Feature: player mounts the board with his boats
 
   As a player
   I want to place my boats on a board
-  So that I will be ready to begin a new match
+  So that I will be able to look for a new match
 
   Scenario: mount the board
     Given I have a board with dimensions <width> x <height>

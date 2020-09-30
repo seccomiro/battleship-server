@@ -6,12 +6,11 @@ Feature: player enters match
 
   Background: match already created
     Given a match already exists
-    And the match is ready to be played by the players
+    And two players are already attached to the match
     And I am a player named "Player 1"
     And my opponent is a player named "Player 2"
 
   Scenario: enter match
-    Given two players are already attached to the match
     And I am not yet playing
     When I enter a match
     Then I should know that my sign in is confirmed

@@ -274,4 +274,25 @@ RSpec.describe Board, type: :model do
       expect(@my_player.board.private).to match_array([[:water, :water], [:water, :water]])
     end
   end
+
+  describe '#mounted?' do
+    before do
+      create_match
+      distribute_my_boats
+    end
+
+    context 'when all the boats are placed' do
+      it 'returns true' do
+        expect(@my_player.board.mounted?).to be(true)
+      end
+    end
+
+    context 'when at least one boat is not placed' do
+      it 'returns false' do
+        @my_player.board.boats.placed.last.remove
+
+        expect(@my_player.board.mounted?).to be(false)
+      end
+    end
+  end
 end

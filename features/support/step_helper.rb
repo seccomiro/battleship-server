@@ -1,5 +1,5 @@
 Given('a match already exists') do
-  create_match
+  create_match(distribute_boats: true)
 end
 
 Given('I am a player named {string}') do |string|

@@ -13,4 +13,7 @@ module Battleship
 
   class MatchStartingError < StandardError
   end
+
+  class PlayerAttachingError < StandardError
+  end
 end
