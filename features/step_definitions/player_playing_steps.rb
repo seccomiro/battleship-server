@@ -18,7 +18,7 @@ Given("I know my opponent's public board") do
   @opponent_public_board = @opponent_player.board.public
 end
 
-When("it's my turn to play") do
+Given("it's my turn to play") do
   @match.player_playing = @my_player
 
   expect(@match.player_playing).to eq(@my_player)
@@ -26,7 +26,8 @@ When("it's my turn to play") do
   expect(@opponent_player.playing?).to be(false)
 end
 
-Then('I should be able to choose a closed cell') do
+Then('I try to guess a closed cell') do
+  expect(@my_player.opponent.board.public[0][0]).to eq(:new)
   @result = @my_player.guess(row: 0, column: 0)
 end
 

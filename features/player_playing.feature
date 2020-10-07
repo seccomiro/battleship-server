@@ -18,6 +18,6 @@ Feature: player plays a match
 
   Scenario: try a first guess
     Given I know my opponent's public board
-    When it's my turn to play
-    Then I should be able to choose a closed cell
+    And it's my turn to play
+    When I try to guess a closed cell
     And I should get a valid return
