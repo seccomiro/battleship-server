@@ -30,7 +30,7 @@ When('I try to guess at [{int},{int}]') do |row, column|
   @original_value = @opponent_player.board.private[row][column]
   @original_opponent_public_board = @opponent_player.board.public
 
-  @result = @my_player.guess(row: 0, column: 0)
+  @result = @my_player.guess(row: row, column: column)
 end
 
 Then('I should get a valid return') do
@@ -54,4 +54,12 @@ end
 
 Given('the cell at [{int},{int}] is closed') do |row, column|
   expect(@my_player.opponent.board.public[row][column]).to eq(:new)
+end
+
+Given('it is ensured that the cell at [{int},{int}] does not have a boat') do |row, column|
+  expect(@my_player.opponent.board.private[row][column]).not_to eq(:boat)
+end
+
+Then('I should be informed that I hit the water') do
+  expect(@result).to eq(:water)
 end
