@@ -27,11 +27,28 @@ Given("it's my turn to play") do
 end
 
 Then('I try to guess a closed cell') do
+  @original_value = @opponent_player.board.private[0][0]
+  @original_opponent_public_board = @opponent_player.board.public
+
   expect(@my_player.opponent.board.public[0][0]).to eq(:new)
   @result = @my_player.guess(row: 0, column: 0)
 end
 
 Then('I should get a valid return') do
-  original_value = @opponent_player.board.private[0][0]
-  expect(@result).to eq(original_value)
+  expect(@result).to eq(@original_value)
+end
+
+Given('it is ensured that a closed cell has a boat') do
+  expect(@my_player.opponent.board.private[0][0]).to eq(:boat)
+end
+
+Then('I should be informed that I hit a boat') do
+  expect(@result).to eq(:boat)
+end
+
+Then("my opponent's public board should be updated with that guess") do
+  @original_opponent_public_board[0][0] = @result
+
+  expect(@my_player.opponent.board.public[0][0]).to eq(@result)
+  expect(@my_player.opponent.board.public).to match_array(@original_opponent_public_board)
 end

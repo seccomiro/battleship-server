@@ -21,3 +21,10 @@ Feature: player plays a match
     And it's my turn to play
     When I try to guess a closed cell
     And I should get a valid return
+
+  Scenario: hitting a boat
+    Given it's my turn to play
+    And it is ensured that a closed cell has a boat
+    When I try to guess a closed cell
+    Then I should be informed that I hit a boat
+    And my opponent's public board should be updated with that guess
