@@ -45,6 +45,8 @@ class Player < ApplicationRecord
   end
 
   def guess(row:, column:)
+    raise Battleship::OtherUserTurnError unless playing?
+
     opponent.board.mark(row: row, column: column)
   end
 
