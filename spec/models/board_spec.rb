@@ -142,13 +142,24 @@ RSpec.describe Board, type: :model do
   end
 
   describe '#mark' do
+    before do
+      create_match
+    end
+
     context 'at a closed cell' do
       it 'returns a Symbol different from :new' do
-        create_match
         result = @my_player.board.mark(row: 0, column: 0)
 
         expect(result).to be_instance_of(Symbol)
         expect(result).not_to eq(:new)
+      end
+    end
+
+    context 'at a already marked cell' do
+      it 'raises a CellNotAllowedError' do
+        @my_player.board.mark(row: 0, column: 0)
+
+        expect { @my_player.board.mark(row: 0, column: 0) }.to raise_error(Battleship::CellNotAllowedError)
       end
     end
   end

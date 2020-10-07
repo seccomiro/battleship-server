@@ -26,11 +26,15 @@ Given("it's my turn to play") do
   expect(@opponent_player.playing?).to be(false)
 end
 
+Given('I want to guess at [{int},{int}]') do |row, column|
+  @guess = -> { @my_player.guess(row: row, column: column) }
+end
+
 When('I try to guess at [{int},{int}]') do |row, column|
   @original_value = @opponent_player.board.private[row][column]
   @original_opponent_public_board = @opponent_player.board.public
 
-  @result = @my_player.guess(row: row, column: column)
+  @result = @guess.call
 end
 
 Then('I should get a valid return') do
@@ -62,4 +66,20 @@ end
 
 Then('I should be informed that I hit the water') do
   expect(@result).to eq(:water)
+end
+
+Given("it's not my turn to play") do
+  @match.player_playing = @opponent_player
+
+  expect(@match.player_playing).not_to eq(@my_player)
+  expect(@my_player.playing?).to be(false)
+  expect(@opponent_player.playing?).to be(true)
+end
+
+When('I try to guess at any position') do
+  @guess = -> { @my_player.guess(row: 0, column: 0) }
+end
+
+Then("I should be informed with an error saying that it's not my turno to play") do
+  expect { @guess.call }.to raise_error(Battleship::OtherUserTurnError)
 end
