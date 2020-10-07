@@ -60,6 +60,8 @@ class Board < ApplicationRecord
   end
 
   def mark(row:, column:)
+    raise Battleship::CellNotAllowedError unless public[row][column] == :new
+
     public_cells[row][column] = cells[row][column]
     save
     Board.cell_value_to_sym(public_cells[row][column])
