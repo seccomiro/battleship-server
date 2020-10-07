@@ -19,12 +19,15 @@ Feature: player plays a match
   Scenario: try a first guess
     Given I know my opponent's public board
     And it's my turn to play
-    When I try to guess a closed cell
+    And the cell at [0,0] is closed
+    When I try to guess at [0,0]
     And I should get a valid return
 
   Scenario: hitting a boat
     Given it's my turn to play
-    And it is ensured that a closed cell has a boat
-    When I try to guess a closed cell
+    And the cell at [0,0] is closed
+    And it is ensured that the cell at [0,0] has a boat
+    When I try to guess at [0,0]
     Then I should be informed that I hit a boat
-    And my opponent's public board should be updated with that guess
+    And my opponent's public board should be updated with that guess for [0,0]
+
