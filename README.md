@@ -1,3 +1,5 @@
 # Battleship Server
 
-Nothing to see here right now. Please return another day.
+This is the code for the server of a [Battleship Game](https://en.wikipedia.org/wiki/Battleship_(game)) made with Ruby on Rails.
+
+When ready, it will provide a fully playable game server via WebSockets (with Action Cable).
