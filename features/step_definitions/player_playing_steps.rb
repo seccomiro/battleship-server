@@ -18,7 +18,7 @@ Given("I know my opponent's public board") do
   @opponent_public_board = @opponent_player.board.public
 end
 
-When("it's my turn to play") do
+Given("it's my turn to play") do
   @match.player_playing = @my_player
 
   expect(@match.player_playing).to eq(@my_player)
@@ -26,11 +26,40 @@ When("it's my turn to play") do
   expect(@opponent_player.playing?).to be(false)
 end
 
-Then('I should be able to choose a closed cell') do
-  @result = @my_player.guess(row: 0, column: 0)
+When('I try to guess at [{int},{int}]') do |row, column|
+  @original_value = @opponent_player.board.private[row][column]
+  @original_opponent_public_board = @opponent_player.board.public
+
+  @result = @my_player.guess(row: row, column: column)
 end
 
 Then('I should get a valid return') do
-  original_value = @opponent_player.board.private[0][0]
-  expect(@result).to eq(original_value)
+  expect(@result).to eq(@original_value)
+end
+
+Given('it is ensured that the cell at [{int},{int}] has a boat') do |row, column|
+  expect(@my_player.opponent.board.private[row][column]).to eq(:boat)
+end
+
+Then('I should be informed that I hit a boat') do
+  expect(@result).to eq(:boat)
+end
+
+Then("my opponent's public board should be updated with that guess for [{int},{int}]") do |row, column|
+  @original_opponent_public_board[row][column] = @result
+
+  expect(@my_player.opponent.board.public[row][column]).to eq(@result)
+  expect(@my_player.opponent.board.public).to match_array(@original_opponent_public_board)
+end
+
+Given('the cell at [{int},{int}] is closed') do |row, column|
+  expect(@my_player.opponent.board.public[row][column]).to eq(:new)
+end
+
+Given('it is ensured that the cell at [{int},{int}] does not have a boat') do |row, column|
+  expect(@my_player.opponent.board.private[row][column]).not_to eq(:boat)
+end
+
+Then('I should be informed that I hit the water') do
+  expect(@result).to eq(:water)
 end
