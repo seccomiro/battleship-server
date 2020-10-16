@@ -80,6 +80,6 @@ When('I try to guess at any position') do
   @guess = -> { @my_player.guess(row: 0, column: 0) }
 end
 
-Then("I should be informed with an error saying that it's not my turno to play") do
+Then("I should be informed with an error saying that it's not my turn to play") do
   expect { @guess.call }.to raise_error(Battleship::OtherUserTurnError)
 end
