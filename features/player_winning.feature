@@ -11,4 +11,12 @@ Feature: player plays a match
     And it's my turn to play
     When I guess at the closed cell
     Then I should be the winner of the match
-    And the match should have the status set to finished
+    And my opponent should be the loser of the match
+    And the match should be finished
+
+  Scenario: losing a match
+    And it's not my turn to play
+    When my opponent guesses at the closed cell
+    Then I should be the loser of the match
+    And my opponent should be the winner of the match
+    And the match should be finished
