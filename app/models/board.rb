@@ -99,6 +99,18 @@ class Board < ApplicationRecord
     end
   end
 
+  def hit_count
+    public.reduce(0) { |total, row| total + row.reduce(0) { |acc, v| acc + (v == :boat ? 1 : 0) } }
+  end
+
+  def boat_cell_count
+    private.reduce(0) { |total, row| total + row.reduce(0) { |acc, v| acc + (v == :boat ? 1 : 0) } }
+  end
+
+  def all_boats_hit?
+    hit_count == boat_cell_count
+  end
+
   private
 
   def each_boat_cell(from_row:, to_row:, from_column:, to_column:)
