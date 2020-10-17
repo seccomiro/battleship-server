@@ -70,4 +70,24 @@ RSpec.describe Match, type: :model do
       end
     end
   end
+
+  describe '#loser' do
+    before do
+      create_match
+    end
+
+    context 'when there is a winner' do
+      it 'returns the opponent player of the winner' do
+        @match.winner = @my_player
+
+        expect(@match.loser).to eq(@my_player.opponent)
+      end
+    end
+
+    context 'when there is no winner yet' do
+      it 'returns nil' do
+        expect(@match.loser).to be_nil
+      end
+    end
+  end
 end

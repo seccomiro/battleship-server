@@ -22,6 +22,10 @@ class Match < ApplicationRecord
     players << player
   end
 
+  def loser
+    winner&.opponent
+  end
+
   private
 
   def draw_starting_player
