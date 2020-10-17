@@ -60,14 +60,6 @@ Then('I should be informed that I hit the water') do
   expect(@result).to eq(:water)
 end
 
-Given("it's not my turn to play") do
-  @match.player_playing = @opponent_player
-
-  expect(@match.player_playing).not_to eq(@my_player)
-  expect(@my_player.playing?).to be(false)
-  expect(@opponent_player.playing?).to be(true)
-end
-
 When('I try to guess at any position') do
   @guess = -> { @my_player.guess(row: 0, column: 0) }
 end

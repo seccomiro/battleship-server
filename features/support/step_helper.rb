@@ -24,3 +24,11 @@ Given("it's my turn to play") do
   expect(@my_player.playing?).to be(true)
   expect(@opponent_player.playing?).to be(false)
 end
+
+Given("it's not my turn to play") do
+  @match.player_playing = @opponent_player
+
+  expect(@match.player_playing).not_to eq(@my_player)
+  expect(@my_player.playing?).to be(false)
+  expect(@opponent_player.playing?).to be(true)
+end
