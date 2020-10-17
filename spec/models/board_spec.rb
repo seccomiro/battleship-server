@@ -306,4 +306,53 @@ RSpec.describe Board, type: :model do
       end
     end
   end
+
+  describe '#hit_count' do
+    it 'returns the number of boats hit' do
+      board = build(:board)
+
+      board.private = [[:boat, :boat], [:water, :water]]
+      board.public_cells = [[nil, nil], [nil, nil]]
+      board.mark(row: 0, column: 0)
+      board.mark(row: 0, column: 1)
+      board.mark(row: 1, column: 0)
+
+      expect(board.hit_count).to eq(2)
+    end
+  end
+
+  describe '#boat_cell_count' do
+    it 'returns the count of cells with boats on the private board' do
+      board = build(:board)
+
+      board.private = [[:boat, :boat], [:water, :boat]]
+
+      expect(board.boat_cell_count).to eq(3)
+    end
+  end
+
+  describe '#all_boats_hit' do
+    let(:board) { build(:board) }
+    before do
+      board.private = [[:boat, :boat], [:water, :water]]
+      board.public_cells = [[nil, nil], [nil, nil]]
+      board.mark(row: 0, column: 0)
+    end
+
+    context 'when all the boats were hit' do
+      it 'returns true' do
+        board.mark(row: 0, column: 1)
+
+        expect(board.all_boats_hit?).to be(true)
+      end
+    end
+
+    context 'when not all the boats were hit' do
+      it 'returns true' do
+        board.mark(row: 1, column: 1)
+
+        expect(board.all_boats_hit?).to be(false)
+      end
+    end
+  end
 end

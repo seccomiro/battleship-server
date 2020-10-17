@@ -45,4 +45,4 @@ Feature: player plays a match
   Scenario: it's not my turn to play
     Given it's not my turn to play
     When I try to guess at any position
-    Then I should be informed with an error saying that it's not my turno to play
+    Then I should be informed with an error saying that it's not my turn to play
