@@ -64,6 +64,10 @@ class Board < ApplicationRecord
 
     public_cells[row][column] = cells[row][column]
     save
+    if all_boats_hit?
+      player.match.status = :finished
+      player.match.winner = player.opponent
+    end
     Board.cell_value_to_sym(public_cells[row][column])
   end
 

@@ -6,7 +6,7 @@ RSpec.describe Match, type: :model do
       create_match(distribute_boats: true)
     end
 
-    it { is_expected.to define_enum_for(:status).with([:created, :has_players, :players_joined, :being_played]) }
+    it { is_expected.to define_enum_for(:status).with([:created, :has_players, :players_joined, :being_played, :finished]) }
 
     describe '#players.joined' do
       context 'when the first enrolled player joins first' do
