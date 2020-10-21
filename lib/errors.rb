@@ -16,4 +16,10 @@ module Battleship
 
   class PlayerAttachingError < StandardError
   end
+
+  class CellNotAllowedError < StandardError
+  end
+
+  class OtherUserTurnError < StandardError
+  end
 end

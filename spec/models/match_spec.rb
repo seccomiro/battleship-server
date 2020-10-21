@@ -6,7 +6,7 @@ RSpec.describe Match, type: :model do
       create_match(distribute_boats: true)
     end
 
-    it { is_expected.to define_enum_for(:status).with([:created, :has_players, :players_joined, :being_played]) }
+    it { is_expected.to define_enum_for(:status).with([:created, :has_players, :players_joined, :being_played, :finished]) }
 
     describe '#players.joined' do
       context 'when the first enrolled player joins first' do
@@ -67,6 +67,26 @@ RSpec.describe Match, type: :model do
         create_match(players: false)
 
         expect { @match.attach_player(@my_player) }.to raise_error(Battleship::PlayerAttachingError)
+      end
+    end
+  end
+
+  describe '#loser' do
+    before do
+      create_match
+    end
+
+    context 'when there is a winner' do
+      it 'returns the opponent player of the winner' do
+        @match.winner = @my_player
+
+        expect(@match.loser).to eq(@my_player.opponent)
+      end
+    end
+
+    context 'when there is no winner yet' do
+      it 'returns nil' do
+        expect(@match.loser).to be_nil
       end
     end
   end

@@ -60,8 +60,14 @@ class Board < ApplicationRecord
   end
 
   def mark(row:, column:)
+    raise Battleship::CellNotAllowedError unless public[row][column] == :new
+
     public_cells[row][column] = cells[row][column]
     save
+    if all_boats_hit? && player
+      player.match.status = :finished
+      player.match.winner = player.opponent
+    end
     Board.cell_value_to_sym(public_cells[row][column])
   end
 
@@ -95,6 +101,18 @@ class Board < ApplicationRecord
     each_boat_cell(args) do |row, column|
       remove(row: row, column: column)
     end
+  end
+
+  def hit_count
+    public.reduce(0) { |total, row| total + row.reduce(0) { |acc, v| acc + (v == :boat ? 1 : 0) } }
+  end
+
+  def boat_cell_count
+    private.reduce(0) { |total, row| total + row.reduce(0) { |acc, v| acc + (v == :boat ? 1 : 0) } }
+  end
+
+  def all_boats_hit?
+    hit_count == boat_cell_count
   end
 
   private

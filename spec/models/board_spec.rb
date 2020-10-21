@@ -142,13 +142,24 @@ RSpec.describe Board, type: :model do
   end
 
   describe '#mark' do
+    before do
+      create_match
+    end
+
     context 'at a closed cell' do
       it 'returns a Symbol different from :new' do
-        create_match
         result = @my_player.board.mark(row: 0, column: 0)
 
         expect(result).to be_instance_of(Symbol)
         expect(result).not_to eq(:new)
+      end
+    end
+
+    context 'at a already marked cell' do
+      it 'raises a CellNotAllowedError' do
+        @my_player.board.mark(row: 0, column: 0)
+
+        expect { @my_player.board.mark(row: 0, column: 0) }.to raise_error(Battleship::CellNotAllowedError)
       end
     end
   end
@@ -292,6 +303,55 @@ RSpec.describe Board, type: :model do
         @my_player.board.boats.placed.last.remove
 
         expect(@my_player.board.mounted?).to be(false)
+      end
+    end
+  end
+
+  describe '#hit_count' do
+    it 'returns the number of boats hit' do
+      board = build(:board)
+
+      board.private = [[:boat, :boat], [:water, :water]]
+      board.public_cells = [[nil, nil], [nil, nil]]
+      board.mark(row: 0, column: 0)
+      board.mark(row: 0, column: 1)
+      board.mark(row: 1, column: 0)
+
+      expect(board.hit_count).to eq(2)
+    end
+  end
+
+  describe '#boat_cell_count' do
+    it 'returns the count of cells with boats on the private board' do
+      board = build(:board)
+
+      board.private = [[:boat, :boat], [:water, :boat]]
+
+      expect(board.boat_cell_count).to eq(3)
+    end
+  end
+
+  describe '#all_boats_hit' do
+    let(:board) { build(:board) }
+    before do
+      board.private = [[:boat, :boat], [:water, :water]]
+      board.public_cells = [[nil, nil], [nil, nil]]
+      board.mark(row: 0, column: 0)
+    end
+
+    context 'when all the boats were hit' do
+      it 'returns true' do
+        board.mark(row: 0, column: 1)
+
+        expect(board.all_boats_hit?).to be(true)
+      end
+    end
+
+    context 'when not all the boats were hit' do
+      it 'returns true' do
+        board.mark(row: 1, column: 1)
+
+        expect(board.all_boats_hit?).to be(false)
       end
     end
   end

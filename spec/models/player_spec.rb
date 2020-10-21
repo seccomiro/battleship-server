@@ -90,4 +90,39 @@ RSpec.describe Player, type: :model do
       end
     end
   end
+
+  describe '#guess' do
+    before do
+      create_match
+    end
+
+    context "when it's the player's turn" do
+      before do
+        @match.player_playing = @my_player
+      end
+
+      context 'at a closed cell' do
+        it 'returns a Symbol different from :new' do
+          result = @my_player.guess(row: 0, column: 0)
+
+          expect(result).to be_instance_of(Symbol)
+          expect(result).not_to eq(:new)
+        end
+      end
+
+      context 'at a already marked cell' do
+        it 'raises a CellNotAllowedError' do
+          @my_player.guess(row: 0, column: 0)
+
+          expect { @my_player.guess(row: 0, column: 0) }.to raise_error(Battleship::CellNotAllowedError)
+        end
+      end
+    end
+
+    context "when it's not the player's turn" do
+      it 'raises a OtherUserTurnError' do
+        expect { @my_player.guess(row: 0, column: 0) }.to raise_error(Battleship::OtherUserTurnError)
+      end
+    end
+  end
 end
